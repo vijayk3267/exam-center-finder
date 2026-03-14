@@ -7,44 +7,54 @@
     <style>
         body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #eef2f3; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
         .container { background: white; width: 90%; max-width: 400px; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); text-align: center; }
-        
         .logo { width: 140px; height: auto; margin-bottom: 15px; border-radius: 10px; }
-        
         h2 { color: #333; margin-bottom: 25px; font-size: 22px; }
-        input { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 10px; font-size: 18px; box-sizing: border-box; outline: none; transition: border-color 0.3s; text-align: center; }
+        input { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 10px; font-size: 18px; box-sizing: border-box; outline: none; text-align: center; }
         input:focus { border-color: #007bff; }
-        button { width: 100%; background: #007bff; color: white; border: none; padding: 15px; border-radius: 10px; font-size: 18px; font-weight: bold; margin-top: 15px; cursor: pointer; transition: background 0.2s; }
-        button:active { background: #0056b3; }
-        
+        button { width: 100%; background: #007bff; color: white; border: none; padding: 15px; border-radius: 10px; font-size: 18px; font-weight: bold; margin-top: 15px; cursor: pointer; }
         #result { display: none; margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 12px; border-left: 5px solid #28a745; text-align: left; }
-        .nav-link { display: block; text-align: center; background: #28a745; color: white; text-decoration: none; padding: 15px; border-radius: 10px; margin-top: 15px; font-weight: bold; font-size: 16px; }
+        .nav-link { display: block; text-align: center; background: #28a745; color: white; text-decoration: none; padding: 15px; border-radius: 10px; margin-top: 15px; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <img src="https://lh3.googleusercontent.com/u/0/d/1QcYB5u9Wv_9Ed7U1o1QVpEY26FqWsmKH" alt="Spark Edx Logo" class="logo">
+    <img src="https://drive.google.com/uc?export=view&id=1QcYB5u9Wv_9Ed7U1o1QVpEY26FqWsmKH" alt="Logo" class="logo">
     
     <h2>Exam Center Finder</h2>
-    <input type="text" id="centerInput" placeholder="Enter Center Code (e.g. 505)">
+    <input type="text" id="centerInput" placeholder="Enter Center Code">
     <button onclick="findCenter()">Locate Center</button>
 
     <div id="result">
         <strong style="color: #555;">Assigned Center:</strong>
-        <div id="cName" style="font-size: 20px; font-weight: bold; margin: 10px 0; color: #111;"></div>
-        <div id="cAddr" style="color: #666; font-size: 14px; line-height: 1.4;"></div>
-        <a id="mapBtn" class="nav-link" target="_blank">Start Navigation</a>
+        <div id="cName" style="font-size: 18px; font-weight: bold; margin: 10px 0; color: #111;"></div>
+        <div id="cAddr" style="color: #666; font-size: 13px; margin-bottom: 10px;"></div>
+        <a id="mapBtn" class="nav-link" href="#" target="_blank">Open Exact Location</a>
     </div>
 </div>
 
 <script>
-    /* DATA SECTION
-       In Excel, use: =" { id: """ & A2 & """, name: """ & B2 & """, address: """ & C2 & """ },"
-    */
+    // --- ENTER DATA BELOW ---
+    // Make sure every line ends with a comma , except the last one!
     const database = [
-        { id: "505", name: "St. Xavier's Institute", address: "Hill Top Road, Mumbai, Maharashtra" },
-        { id: "1024", name: "Govt City College", address: "High Court Rd, Hyderabad, Telangana" },
-        { id: "VJA-12", name: "ZP High School", address: "MG Road, Vijayawada, AP" }
+        { 
+            id: "505", 
+            name: "St. Xavier's Institute", 
+            address: "Hill Top Road, Mumbai", 
+            map: "https://maps.app.goo.gl/sample1" 
+        },
+        { 
+            id: "1024", 
+            name: "Govt City College", 
+            address: "High Court Rd, Hyderabad", 
+            map: "https://maps.app.goo.gl/sample2" 
+        },
+        { 
+            id: "VJA-12", 
+            name: "ZP High School", 
+            address: "MG Road, Vijayawada", 
+            map: "https://maps.app.goo.gl/sample3" 
+        }
     ];
 
     function findCenter() {
@@ -55,11 +65,13 @@
         if (res) {
             document.getElementById("cName").innerText = res.name;
             document.getElementById("cAddr").innerText = res.address;
-            // Generates Google Maps search link
-            document.getElementById("mapBtn").href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(res.name + " " + res.address);
+            
+            // REDIRECT LOGIC: This uses your exact link from the database
+            document.getElementById("mapBtn").href = res.map;
+            
             box.style.display = "block";
         } else {
-            alert("Center Code not found. Please double-check the code.");
+            alert("Center Code not found. Please try again.");
             box.style.display = "none";
         }
     }
