@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Locator</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #eef2f3; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .container { background: white; width: 90%; max-width: 400px; padding: 30px; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #333; margin-bottom: 25px; }
+        input { width: 100%; padding: 15px; border: 2px solid #ddd; border-radius: 10px; font-size: 18px; box-sizing: border-box; outline: none; transition: border-color 0.3s; }
+        input:focus { border-color: #007bff; }
+        button { width: 100%; background: #007bff; color: white; border: none; padding: 15px; border-radius: 10px; font-size: 18px; font-weight: bold; margin-top: 15px; cursor: pointer; }
+        #result { display: none; margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 12px; border-left: 5px solid #28a745; }
+        .nav-link { display: block; text-align: center; background: #28a745; color: white; text-decoration: none; padding: 15px; border-radius: 10px; margin-top: 15px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Exam Center Finder</h2>
+    <input type="text" id="ticketInput" placeholder="Enter Hall Ticket No.">
+    <button onclick="findCenter()">Search</button>
+
+    <div id="result">
+        <strong style="color: #555;">Your Center:</strong>
+        <div id="cName" style="font-size: 20px; font-weight: bold; margin: 10px 0;"></div>
+        <div id="cAddr" style="color: #666; font-size: 14px;"></div>
+        <a id="mapBtn" class="nav-link" target="_blank">Open in Google Maps</a>
+    </div>
+</div>
+
+<script>
+    // PASTE YOUR EXCEL ROWS BETWEEN THE BRACKETS BELOW
+    const database = [
+        { id: "101", name: "Government Junior College", address: "Station Road, Guntur, AP" },
+        { id: "102", name: "St. Anns High School", address: "MG Road, Vijayawada, AP" }
+    ];
+
+    function findCenter() {
+        const val = document.getElementById("ticketInput").value.trim();
+        const res = database.find(item => item.id === val);
+        const box = document.getElementById("result");
+
+        if (res) {
+            document.getElementById("cName").innerText = res.name;
+            document.getElementById("cAddr").innerText = res.address;
+            document.getElementById("mapBtn").href = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(res.name + " " + res.address);
+            box.style.display = "block";
+        } else {
+            alert("Number not found. Please try again.");
+            box.style.display = "none";
+        }
+    }
+</script>
+
+</body>
+</html>
